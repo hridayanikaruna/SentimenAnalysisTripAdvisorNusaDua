@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sentiment</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="wrapper">
+            <div class="judul"><a href="">Data Sentiment Hotel Nusa Dua</a></div>
+        </div>
+    </nav>
+    
+    <div class="choose">
+        <button class="button" onclick="update(data1); showReviews('Mulia Resort')">Mulia Resort</button>
+        <button class="button" onclick="update(data2); showReviews('Mulia Villas')">Mulia Villas</button>
+        <button class="button" onclick="update(data3); showReviews('Melia Bali')">Melia Bali</button>
+        <button class="button" onclick="update(data4); showReviews('Kempinski')">Kempinski</button>
+        <button class="button" onclick="update(data5); showReviews('Sofitel')">Sofitel</button>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color positive"></div>
+          <span>Positive</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color netral"></div>
+          <span>Netral</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color negative"></div>
+          <span>Negative</span>
+        </div>
+    </div>
+
+    <div class="legend">
+        <span>Akurasi: 84.89%</span>
+    </div>
+      
+    <div class="posisi">
+        <div id="my_dataviz"></div>
+        <div id="review-container"></div>
+    </div>
+    
+    <script>
+        //variabel untuk bar
+        var data1 = [
+            {bulan: "November", Negative: 1, Netral: 0, Positive: 24},
+            {bulan: "December", Negative: 1, Netral: 2, Positive: 84},
+            {bulan: "January", Negative: 2, Netral: 0, Positive: 42},
+            {bulan: "February", Negative: 0, Netral: 0, Positive: 50},
+            {bulan: "March", Negative: 0, Netral: 0, Positive: 87},
+            {bulan: "April", Negative: 0, Netral: 1, Positive: 19}
+        ];
+
+        var data2 = [
+            {bulan: "November", Negative: 1, Netral: 1, Positive: 9},
+            {bulan: "December", Negative: 0, Netral: 0, Positive: 49},
+            {bulan: "January", Negative: 0, Netral: 0, Positive: 34},
+            {bulan: "February", Negative: 1, Netral: 0, Positive: 27},
+            {bulan: "March", Negative: 0, Netral: 0, Positive: 43},
+            {bulan: "April", Negative: 0, Netral: 0, Positive: 16}
+        ];
+
+        var data3 = [
+            {bulan: "November", Negative: 2, Netral: 0, Positive: 27},
+            {bulan: "December", Negative: 3, Netral: 3, Positive: 52},
+            {bulan: "January", Negative: 3, Netral: 1, Positive: 40},
+            {bulan: "February", Negative: 0, Netral: 2, Positive: 45},
+            {bulan: "March", Negative: 1, Netral: 1, Positive: 49},
+            {bulan: "April", Negative: 0, Netral: 3, Positive: 15}
+        ];
+
+        var data4 = [
+            {bulan: "November", Negative: 0, Netral: 0, Positive: 11},
+            {bulan: "December", Negative: 3, Netral: 0, Positive: 21},
+            {bulan: "January", Negative: 3, Netral: 1, Positive: 15},
+            {bulan: "February", Negative: 1, Netral: 1, Positive: 17},
+            {bulan: "March", Negative: 1, Netral: 0, Positive: 22},
+            {bulan: "April", Negative: 0, Netral: 0, Positive: 8}
+        ];
+
+        var data5 = [
+            {bulan: "November", Negative: 4, Netral: 2, Positive: 40},
+            {bulan: "December", Negative: 18, Netral: 4, Positive: 68},
+            {bulan: "January", Negative: 7, Netral: 4, Positive: 70},
+            {bulan: "February", Negative: 2, Netral: 3, Positive: 61},
+            {bulan: "March", Negative: 2, Netral: 1, Positive: 44},
+            {bulan: "April", Negative: 2, Netral: 2, Positive: 28}
+        ];
+        
+        //variabel untuk review
+        var hotelReviews = {
+            "Mulia Resort": {
+                "Positive": [
+                "Huge place but extremely clean and beautiful, food amazing",
+                "Excellent stay",
+                // "Worth the money",
+                // "Easter holiday at Mulia Bali",
+                // "Best Resort in Bali"
+                ],
+                "Netral": [
+                "Polished product",
+                "much to be desired",
+                // "Best experience worth of every off days i got"
+                ],
+                "Negative": [
+                "I’ll start with the 👎",
+                // "Not recommended",
+                // "Probable food poisoning due to food safety practices",
+                // "Terrible Wi-Fi connection"
+                ]
+            },
+            "Mulia Villas": {
+                "Positive": [
+                "great facility and service",
+                "Exceptional service in luxury villa accommodation",
+                // "best experience at Mulia Villas Nusa Dua",
+                // "Beyond Exceptional",
+                // "Villas are stunning"
+                ],
+                "Netral": [
+                "Mostly a really nice resort. Butlers we’re awesome and the room was cool.Obviously it is expensive, especially for anything you have to purchase at the resort"
+                ],
+                "Negative": [
+                "The restaurants were of a high standard, but were very expensive.",
+                "A mixed experience at the Mulia Villas",
+                ]
+            },
+            "Melia Bali": {
+                "Positive": [
+                "Amazing resort with some of the most friendly and kind staff ever!",
+                "I had an amazing stay at Meliā Resort",
+                // "Paradise",
+                // "A beautiful resort in gorgeous Nusa Dua",
+                // "Amazing hotel in a beautiful location with the best staff!"
+                ],
+                "Netral": [
+                "Average experience for the hotel rating and price",
+                "OK. Ok. Yes. Its true, I admit it. This place is awesome",
+                // "An honest and critical review",
+                // "B is for Beautiful staff",
+                // "I believe there better places to stay in the area"
+                ],
+                "Negative": [
+                "Bad very bad, moldy room and the bedding felt damp.",
+                "Money goes missing",
+                // "Cheap attempt at 5 star luxury",
+                // "cleanliness",
+                // "Overpriced and disappointing"
+                ]
+            },
+            "Kempinski": {
+                "Positive": [
+                "The best hotel so far",
+                "Amazing Stay! The Apurva Exceeded All Expectations.",
+                // "Heaven",
+                // "Best vacation for families",
+                // "Must Stay"
+                ],
+                "Netral": [
+                "Impressive architecture",
+                "This resort is huge"
+                ],
+                "Negative": [
+                "Sacrificing guest experience for a wedding event",
+                "Good place Bad staff",
+                // "HORRIBLE AND TRAUMATIZING.",
+                // "Terrible service - lack of understanding vegans",
+                // "Unexpected service and SOP from a 5 star hotel"
+                ]
+            },
+            "Sofitel": {
+                "Positive": [
+                "Amazing stay overall",
+                "Awesome resort with awesome facilities",
+                // "Nice Stay!",
+                // "A great place for family to stay",
+                // "It was challenging but fun."
+                ],
+                "Netral": [
+                "Watch out for the mosquitoes!",
+                "Middling Hotel in a Good Location for the Convention Center",
+                // "Nice property in Nusa Dua but a little disappointing",
+                // "Fine resort and impressive staff + facilities; Dirty rooms",
+                // "Very Good….with a couple of caveats"
+                ],
+                "Negative": [
+                "Disappointing experience - Accor Plus Gold members",
+                "Disappointing visit to Sofitel Bali Nusa Dua",
+                // "Nightmare Start Rescued by Impeccable Service of the Manager",
+                // "Poor service.",
+                // "Disappointing"
+                ]
+            }
+        };
+
+        //ukuran tampilan chart
+        var margin = {top: 30, right: 30, bottom: 70, left: 60},
+            width = 1200 - margin.left - margin.right,
+            height = 600 - margin.top - margin.bottom;
+
+        var svg = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var x = d3.scaleBand()
+        .range([ 0, width ])
+        .padding(0.2);
+        svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+        var y = d3.scaleLinear()
+        .range([ height, 0]);
+        svg.append("g")
+        .attr("class", "y-axis")
+        .call(d3.axisLeft(y).ticks(10));
+
+        function update(data) {
+            x.domain(data.map(function(d) { return d.bulan; }));
+            y.domain([0, d3.max(data, function(d) { return d3.max([d.Negative, d.Netral, d.Positive]); }) + 10]);
+
+            var groups = svg.selectAll(".group")
+                .data(data, function(d) { return d.bulan; });
+
+            groups.exit().remove();
+
+            var enterGroups = groups.enter()
+                .append("g")
+                .attr("class", "group")
+                .attr("transform", function(d) { return "translate(" + x(d.bulan) + ",0)"; });
+
+            enterGroups.append("rect")
+                .attr("class", "bar negative")
+                .attr("fill", "#FF6464");
+
+            enterGroups.append("rect")
+                .attr("class", "bar netral")
+                .attr("fill", "#9DB2BF");
+
+            enterGroups.append("rect")
+                .attr("class", "bar positive")
+                .attr("fill", "#77D970");
+
+            groups = groups.merge(enterGroups);
+            
+            groups.selectAll(".bar.negative")
+                .data(function(d) { return [d]; })
+                .transition()
+                .duration(1000)
+                .attr("x", function(d) { return x.bandwidth() / 3 * 0; })
+                .attr("y", function(d) { return y(d.Negative); })
+                .attr("width", x.bandwidth() / 3)
+                .attr("height", function(d) { return height - y(d.Negative); });
+
+            groups.selectAll(".bar.netral")
+                .data(function(d) { return [d]; })
+                .transition()
+                .duration(1000)
+                .attr("x", function(d) { return x.bandwidth() / 3 * 1; })
+                .attr("y", function(d) { return y(d.Netral); })
+                .attr("width", x.bandwidth() / 3)
+                .attr("height", function(d) { return height - y(d.Netral); });
+
+            groups.selectAll(".bar.positive")
+                .data(function(d) { return [d]; })
+                .transition()
+                .duration(1000)
+                .attr("x", function(d) { return x.bandwidth() / 3 * 2; })
+                .attr("y", function(d) { return y(d.Positive); })
+                .attr("width", x.bandwidth() / 3)
+                .attr("height", function(d) { return height - y(d.Positive); });
+
+            groups.selectAll(".bar-label")
+                .remove(); // Hapus label yang sudah ada sebelumnya
+
+            groups.selectAll(".bar-label.positive")
+                .data(function(d) { return [d]; })
+                .enter()
+                .append("text")
+                .attr("class", "bar-label positive")
+                .attr("x", function(d) { return x.bandwidth() / 1.2; })
+                .attr("y", function(d) { return y(d.Positive) - 5; })
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "baseline")
+                .text(function(d) { return d.Positive; });
+
+            groups.selectAll(".bar-label.netral")
+                .data(function(d) { return [d]; })
+                .enter()
+                .append("text")
+                .attr("class", "bar-label netral")
+                .attr("x", function(d) { return x.bandwidth() / 2; })
+                .attr("y", function(d) { return y(d.Netral) - 5; })
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "baseline")
+                .text(function(d) { return d.Netral; });
+
+            groups.selectAll(".bar-label.negative")
+                .data(function(d) { return [d]; })
+                .enter()
+                .append("text")
+                .attr("class", "bar-label negative")
+                .attr("x", function(d) { return x.bandwidth() / 5.6; })
+                .attr("y", function(d) { return y(d.Negative) - 5; })
+                .attr("text-anchor", "middle")
+                .attr("alignment-baseline", "baseline")
+                .text(function(d) { return d.Negative; });
+
+            svg.select(".x-axis")
+                .transition()
+                .duration(1000)
+                .call(d3.axisBottom(x));
+
+            svg.select(".y-axis")
+                .transition()
+                .duration(1000)
+                .call(d3.axisLeft(y).ticks(10));
+        }
+
+        // Fungsi untuk menampilkan ulasan berdasarkan hotel yang dipilih
+        function showReviews(hotelName) {
+            var reviews = hotelReviews[hotelName];
+
+            var reviewContainer = document.getElementById("review-container");
+            reviewContainer.innerHTML = ""; // Mengosongkan kontainer review sebelumnya
+
+            for (var sentiment in reviews) {
+                var reviewList = reviews[sentiment];
+
+                var card = document.createElement("div");
+                card.classList.add("card");
+                card.classList.add(sentiment.toLowerCase());
+
+                var cardTitle = document.createElement("h3");
+                cardTitle.innerText = sentiment;
+                card.appendChild(cardTitle);
+
+                var ul = document.createElement("ul");
+                for (var i = 0; i < reviewList.length; i++) {
+                var li = document.createElement("li");
+                li.innerText = reviewList[i];
+                ul.appendChild(li);
+                }
+                card.appendChild(ul);
+
+                reviewContainer.appendChild(card);
+            }
+        }
+
+        // Set data default dan tampilkan review saat halaman pertama kali dimuat
+        update(data1);
+        showReviews(hotelReviews);
+    </script>
+</body>
+</html>

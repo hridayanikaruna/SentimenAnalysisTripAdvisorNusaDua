@@ -1,0 +1,160 @@
+*{
+    text-decoration: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.wrapper{
+    text-align: center;
+    margin: auto;
+    position: relative;
+}
+
+.judul a{
+    font-size: 50px;
+    font-weight: 800;
+    font-family: courier;
+    color: #F8F6F4;
+}
+
+nav{
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    line-height: 80px;
+    top: 0px;
+    background: #71C9CE;
+}
+
+.posisi {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+  
+#my_dataviz {
+    margin-right: 20px;
+}
+
+.choose{
+    margin-top: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.button {
+    background-color: #71C9CE; /* Warna latar belakang tombol */
+    border: 0;
+    color: white; /* Warna teks tombol */
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s; /* Durasi transisi saat hover */
+    cursor: pointer;
+    border-radius: 20px; /* Sudut lengkung tombol */
+  }
+  
+.button:hover {
+    background-color: #26898e; /* Warna latar belakang tombol saat di hover */
+}
+  
+  
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path{
+    display: none;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+  
+.legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+  
+.legend-color.positive {
+    background-color: #77D970;
+}
+
+.legend-color.netral {
+    background-color: #9DB2BF;
+}
+
+.legend-color.negative {
+    background-color: #FF6464;
+}
+
+.card {
+    background-color: #F8F8F8;
+    border: 0px solid #DDD;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+
+.card p {
+    font-size: 12px;
+    margin: 5px;
+}
+
+.card.positive {
+    background-color: #E0FFE0;
+}
+
+.card.neutral {
+    background-color: #F0F0F0;
+}
+
+.card.negative {
+    background-color: #FFE0E0;
+}
+
+.review-tooltip {
+    pointer-events: none;
+}
+
+.tooltip-background {
+    fill: #f9f9f9;
+    stroke: #ccc;
+    stroke-width: 1px;
+}
+
+.tooltip-text {
+    font-weight: bold;
+    font-size: 12px;
+    text-anchor: middle;
+}
+
+.tooltip-review {
+    font-size: 12px;
+    text-anchor: middle;
+}
